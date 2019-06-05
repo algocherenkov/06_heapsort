@@ -48,28 +48,19 @@ size_t getParent(size_t parentIndex)
 
 void drown(int* heap, size_t index, size_t size)
 {
-    bool leftExists = true;
-    bool rightExists = true;
-
     size_t left = getLeftIndex(index);
-    if(left >= size)
-        leftExists = false;
-
     size_t right = getRightIndex(index);
-    if(right >= size)
-        rightExists = false;
-
     size_t largest = 0;
 
-    if((left < size && heap[left] > heap[right]) || (left < size && !rightExists))
+    if(left < size && heap[left] > heap[index])
         largest = left;
     else
         largest = index;
 
-    if((right < size && heap[right] > heap[largest]) || (right < size && !leftExists ))
+    if(right < size && heap[right] > heap[largest])
         largest = right;
 
-    if(largest != index && heap[index] < heap[largest])
+    if(largest != index)
     {
         Swap(heap, index, largest);
         drown(heap, largest, size);
@@ -78,29 +69,24 @@ void drown(int* heap, size_t index, size_t size)
 
 void drownIterative(int* heap, size_t index, size_t size)
 {
-    bool leftExists = true;
-    bool rightExists = true;
+
     bool isSwaped = false;
     size_t left = getLeftIndex(index);
     size_t right = getRightIndex(index);
+    size_t largest = 0;
 
-    if(left >= size)
-        leftExists = false;
-    if(right >= size)
-        rightExists = false;
-
-    while(leftExists)
+    while(left < size)
     {
-        size_t largest = 0;
-        if((left < size && heap[left] > heap[right]) || (left < size && !rightExists))
+
+        if(left < size && heap[left] > heap[index])
             largest = left;
         else
             largest = index;
 
-        if((right < size && heap[right] > heap[largest]) || (right < size && !leftExists ))
+        if(right < size && heap[right] > heap[largest])
             largest = right;
 
-        if(largest != index && heap[index] < heap[largest])
+        if(largest != index)
         {
             Swap(heap, index, largest);
             isSwaped = true;
@@ -114,13 +100,6 @@ void drownIterative(int* heap, size_t index, size_t size)
         index = largest;
         left = getLeftIndex(index);
         right = getRightIndex(index);
-        leftExists = true;
-        rightExists = true;
-
-        if(left >= size)
-            leftExists = false;
-        if(right >= size)
-            rightExists = false;
     }
 }
 
